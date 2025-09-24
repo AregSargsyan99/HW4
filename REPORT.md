@@ -1,5 +1,5 @@
 Areg Sargsyan
-The author of the codes is me and only me.
+The author is me and only me.
 
 I made these files as required and and then linked them into square_prog:
 
@@ -474,3 +474,6 @@ From nm: in main.o I see T main and U square, plus U printf. That means main is 
 From objdump -d: in main.o the call to square is not resolved yet and shows as a placeholder (e8 00 00 00 00 followed by a local target), which is normal for relocatable code. In math_utils.o the square function is just a few instructions (load the argument, imul, return). In the final executable square_prog the call is resolved to a real target (call 1183 <square>), and the printf call goes through the PLT (call 1050 <printf@plt>). The executable also contains code you never see in the objects, like _start, and sections for initialization and finalization; that’s part of the normal C runtime startup/teardown.
 From readelf: both object files are Type: REL (Relocatable file) with no program headers. They have sections like .text, .data, .bss, .rodata, .symtab, .strtab, and, importantly, relocation sections such as .rela.text (main.o also shows .rela.eh_frame). These relocation sections are the “to-be-fixed” places the linker must patch. The final program square_prog is Type: DYN (Position-Independent Executable), with an entry point (0x1060 on my system) and multiple program headers. It also includes dynamic/loader sections that don’t exist in the objects, such as .interp, .gnu.hash, .dynsym, .dynstr, .gnu.version*, .rela.dyn, .rela.plt, .plt, .plt.got, .plt.sec, .got, .dynamic, plus .init, .fini, and the init/fini arrays. Its .text, .rodata, .data, and .bss are the merged, laid-out results of linking. My build also still has a .symtab/.strtab because the executable isn’t stripped, which is fine.
 
+git Link:
+
+https://github.com/AregSargsyan99/HW4
